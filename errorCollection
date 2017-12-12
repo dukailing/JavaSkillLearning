@@ -1,0 +1,100 @@
+# error 
+问题：Tomcat Could not publish server configuration for Tomcat v7.0 Server at localhost.错误
+
+解决方法：当我们创建一个Tomcat项目的时候，Eclipse会自动增加一个Servers项目。在这个项目中,找到你部署项目的服务文件夹. 在这个文件夹下有一个"server.xml"文件,打开这个文件,修改对应项目的Context节点即可.
+
+
+
+问题：javax.servlet.http.httpservlet was not found on the java build path
+
+解决办法：
+step1：添加tomcat服务器。
+step2：项目->build path ->add Library ->server Runtime->选择刚才添加的tomcat。
+OK解决。
+
+问题：500
+
+解决办法：
+看jar包
+看controller以及类是否配置正确
+
+
+
+问题：404 The requested resource is not available.
+
+解决办法：
+
+
+java.lang.IllegalArgumentException: node to traverse cannot be null!
+
+在使用HQL语句的时候 将关键字from 误写成了form
+
+
+quote symbol expected 异常处理 
+
+在forEach中的items属性中少加了“”
+
+
+
+问题：HTTP Status 500 - Request processing failed; nested exception is org.hibernate.TypeMismatchException: Provided id of the wrong type for class com.sweet.cakeonline.entity.Users. Expected: class java.lang.Integer, got class java.lang.String
+
+解决办法：
+
+项目使用hibernate框架得时候，有时会通过id去获取实体类对象，但有时会报一下错误：
+
+org.hibernate.TypeMismatchException: Provided id of the wrong type for class xx. Expected: class java.lang.Integer, got class java.lang.String
+
+比如代码通过以下dao层的get方法获取实体对象,要传实体的class和id,如果调用时id所传的参数是String字符串类型，就会报以上错误。
+
+
+
+Don't know how to iterate over supplied "items" in &lt;forEach&gt;问题的解决方法
+
+后来经过检查代码，发现是在JSP文件中，JSTL的标签  <c:forEach> 里的items属性被赋予了一个无法遍历的对象。
+
+
+HTTP Status 400 - The request sent by the client was syntactically incorrect.
+
+HTTP Status 500 - Request processing failed; nested exception is java.lang.NumberFormatException: For input string: ""
+
+HTTP Status 500 - Handler dispatch failed; nested exception is java.lang.Error: Unresolved compilation problem: 
+
+解决方法：jsp页面参数与controller页面的参数属性不匹配
+
+
+Caused by: javax.persistence.TransactionRequiredException: Executing an update/delete query
+
+错误原因：由于是直接对Dao层进行操作没有进行事务控制添加事务控制
+
+修改方法：在service类中添@Transactional(readOnly=false)注解
+
+错误Unknown column 'users0_.sddress' in 'field list'
+解决办法：Users类中的注解错误
+
+
+问题：
+注册页面跳转不成功Don't know how to iterate over supplied "items" in &lt;forEach&gt;
+ 
+解决方法： 应该是forEach中有低级错误，比如没加$,"",或者var和items搞反了，如下为正确
+
+	<c:forEach items="${list }" var="cake">
+  
+		${cake.gname }<br>
+    
+	</c:forEach>
+
+
+Hibernate不允许int和float性的数据为空
+
+
+错误：Property 'XXX' not found on type java.lang.String解决方案
+
+一，标签指令错误。
+
+改正后的指令标签：
+
+<%@ taglib prefix="c" uri="http://j ava.sun.com/jsp/jstl/core" %>
+
+二，foreach标签错误
+
+<c:forEach items="${XXX }" var="xx">
