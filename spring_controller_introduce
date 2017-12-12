@@ -1,0 +1,43 @@
+#  java controller方法
+
+##  方法一
+
+@RequestMapping(value="/list" , method=RequestMethod.GET)
+
+	  public String list(RedirectAttributes redirectAttributes,HttpServletResponse response) throws IOException {
+    
+		List<Cake> list=this.cakeServiceImpl.listAll();
+    
+	  redirectAttributes.addFlashAttribute("list", list);
+    
+	  return "redirect:/list.jsp";
+    
+} 
+## 方法二
+
+@RequestMapping("/list")
+public String list(Model model,HttpServletResponse response) throws IOException{
+		List<Cake> list=this.cakeServiceImpl.listAll();
+		model.addAttribute("list", list);
+		model.addAttribute("cakesteplist",cakesteplist);		
+	  return "list";
+}
+ 
+## 方法三
+
+@RequestMapping("/list")
+
+public void list(Model model,HttpServletRequest request,HttpServletResponse response) throws IOException{
+
+		List<Cake> list=this.cakeServiceImpl.listAll();
+    
+		request.setAttribute("list", list);	
+    
+		response.sendRedirect("/Cake/list.jsp");
+
+	}
+  
+
+  
+  
+	
