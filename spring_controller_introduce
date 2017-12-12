@@ -17,9 +17,13 @@
 
 @RequestMapping("/list")
 public String list(Model model,HttpServletResponse response) throws IOException{
+
 		List<Cake> list=this.cakeServiceImpl.listAll();
+		
 		model.addAttribute("list", list);
-		model.addAttribute("cakesteplist",cakesteplist);		
+		
+		model.addAttribute("cakesteplist",cakesteplist);
+		
 	  return "list";
 }
  
