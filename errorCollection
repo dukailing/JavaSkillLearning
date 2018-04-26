@@ -69,3 +69,26 @@ Hibernate不允许int和float性的数据为空
 <%@ taglib prefix="c" uri="http://j ava.sun.com/jsp/jstl/core" %>
 二，foreach标签错误
 <c:forEach items="${XXX }" var="xx">
+
+
+Bean对象注入失败 .NoSuchBeanDefinitionException: No qualifying bean of type..
+
+直接原因：Bean对象的注解标签没有添加 （ 如 @Controller， @Service，@Repository等等），或者是注解的扫描是否打开,
+即在applicationContext.xml 上下文中是否配置了 ： <context:component-scan base-package="com"> 或者 <context:annotation-config /> 这二者选其一，
+有了前者就不用再加后者。这里需要说明的是为了不引起Service(业务层）事务不生效的问题，建议在applicationContext.xml 中只扫描注入除控制层
+以外的注解，而控制层（Controller）的注入交由MVC来进行扫描注入(servlet)。
+
+光从上述异常中是无法看出注解是否启动扫描的。
+
+间接原因：1. 代码编译问题导致。如，Myeclipse 或其他IDE工具。  这种clean 重新编译即可 
+
+2. JDK 与 Spring 版本不兼容  根据自己的JDK找相应支持的Jar
+
+3. 缺少注解相关的Jar 文件     在网上找标准配置清单（网上一堆）
+
+4. 扫描器配置冲突
+检查web.xml ,applicationContext.xml 和aplicationContext-mvc.xml中注解相关配置是否正确。
+
+在Java Web项目中 使用SpringMVC +Hibernate+全注解的过程中，虽然减轻了Struts的XML繁重配置，但同时给接触SpringMVC注解不深的人也带来了许多问题。所有的
+Bean都依赖于注解的扫描注入，此过程的实现全部封装在了Spring的Jar包中，开发人员可无需关心注入的整个过程，但一旦注入出现问题，会让很多对注解了解不深的人
+头疼不已。看着密密麻麻的Exception，却无从下手。 
