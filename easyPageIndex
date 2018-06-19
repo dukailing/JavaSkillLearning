@@ -1,0 +1,83 @@
+@Repository
+public class CourseDaoImpl{
+	@Resource
+	private SessionFactory sessionFactory;
+	/**
+	 * 通过ID查找收藏
+	 * @param ID
+	 * @return
+	 */
+	public UserCollections findCollectionByID(int ID) {
+		return this.sessionFactory.getCurrentSession().get(UserCollections.class,ID);
+	} 
+	/**
+	 *通过用户ID分页查找收藏
+	 * @param userID
+	 * @param page
+	 * @return
+	 */
+	public List<UserCollections> findUserCollectionsByUserID(int userID,int page){
+		Query query=this.sessionFactory.getCurrentSession().createQuery("from UserCollections where userLogin.userID="+userID+"and collecting=1");
+		query.setFirstResult((page-1)*6);
+		query.setMaxResults(6);	
+		return query.list();
+		
+	}
+  }
+  
+  
+  
+  -----------------------------------------------------------------------------------------------------------------------------------
+  @Service
+@Transactional(readOnly=false)
+
+public class CourseServiceImpl {
+	@Resource
+	private CourseDaoImpl courseDaoImpl;
+	/**
+	 * 通过ID查找收藏
+	 * @param ID
+	 * @return
+	 */
+	public UserCollections findCollectionByID(int ID) {
+		return this.courseDaoImpl.findCollectionByID(ID);
+	}
+	/**
+	 * 通过用户ID分页查找收藏
+	 * @param userID
+	 * @param page
+	 * @return
+	 */
+	public List<UserCollections> findUserCollectionsByUserID(int userID,int page){
+		return this.courseDaoImpl.findUserCollectionsByUserID(userID,page);
+	}
+  }
+  
+  
+  ---------------------------------------------------------------------------------------------------------------------------------
+  //分页controller类中方法里：
+				int collectionsPageCount=this.courseServiceImpl.getcollectionsPageCountByUserID(userID);	
+				//int pageIndex=1;	
+				 if(0==collectionsPageIndex|| collectionsPageIndex<0) {
+					 session.setAttribute("collectionsPageIndex",1);
+					 
+				 }else {
+					 session.setAttribute("collectionsPageIndex",collectionsPageIndex);
+					 	}
+				session.setAttribute("collectionsPageIndex",collectionsPageIndex);
+				session.setAttribute("collectionsPageCount",collectionsPageCount);
+     -------------------------------------------------------------------------------------------------------------------------------
+     jsp显示
+     <div class="evaluate_page">
+						<ul class="evaluate_page_list">
+							<li><a href="../course/courseDetails?courseID=${courseDetails.courseID }&evaluatePageIndex=1">首页</a></li>
+							<li><a href="../course/courseDetails?courseID=${courseDetails.courseID }&evaluatePageIndex=${evaluatePageIndex-1}">上一页</a></li>
+						  <c:if test="${evaluatePageIndex<evaluatePageCount}">
+                   <li><a href="../course/courseDetails?courseID=${courseDetails.courseID }&evaluatePageIndex=${evaluatePageIndex+1}">下一页</a></li>
+               </c:if>
+               <c:if test="${evaluatePageIndex>=evaluatePageCount}">
+                    <li><a href="../course/courseDetails?courseID=${courseDetails.courseID }&evaluatePageIndex=${evaluatePageCount }">下一页</a></li>
+                </c:if>
+						   <li><a href="../course/courseDetails?courseID=${courseDetails.courseID }&evaluatePageIndex=${evaluatePageCount}">尾页</a></li>
+						</ul>
+					</div>
